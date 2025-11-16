@@ -1,0 +1,19 @@
+{
+    "comandoIniciarLocal": "python -m uvicorn api.index:app --reload --port 8001",
+    "DespliegueVercel": "https://fast-api-login-six.vercel.app/",
+
+    "comandoIniciarVercel": "No requiere comando",
+
+    "instalarLibrerias": {
+        "comando": "pip install",
+        "librerias": {
+            "fastapi": "pip install \"fastapi[standard]\" \"uvicorn[standard]\"",
+            "supabase": "pip install supabase"
+        }
+    },
+
+    "tenerEnCuenta": {
+        "__init__": "Se debe colocar en cada carpeta para poder utilizar las rutas en import from, ejemplo src.routes.login, entonces creo un __init__.py en esa carpeta.",
+        "comandoIniciar": "El index:app depende del archivo que va a iniciar primero, en este caso index.py y app es la ruta @app"
+    }
+}

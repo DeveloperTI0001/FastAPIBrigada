@@ -1,0 +1,98 @@
+from fastapi import FastAPI, Request, UploadFile, File, Form
+from src.middleware.verificarToken import VerificarToken
+from fastapi.middleware.cors import CORSMiddleware
+from src.routes.usuarios import usuario
+from src.routes.brigadas import brigadas
+from src.routes.brigada import brigada
+from src.routes.hojaDeVida import hojaDeVida
+from src.routes.registrarUsuario import registrarUsuario
+from typing import Optional
+from uuid import UUID
+import socket
+
+app = FastAPI(
+    title = "API de Brigadas",
+    description = "Permite gestionar el backend de Brigadas",
+    version = "2.0.0",
+    contact = {
+        "name": "Carlos Pinto",
+        "email": "cpinto5@udi.edu.co",
+    },
+    swagger_ui_parameters={
+        "displayRequestDuration": True,      # Muestra tiempo de respuesta
+    }
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+# Detectar entorno al iniciar
+hostname = socket.gethostname()
+local_ip = socket.gethostbyname(hostname)
+
+print("Iniciando FastAPI desde:", local_ip)
+
+# Si FastAPI se levanta en localhost no se activa el middleware
+# Lo hizo para poder ir configurando en localhost y hacer las pruebas
+if local_ip not in ("192.168.56.1", "0.0.0.0"):
+    print("En Producción: Activando middleware de VerificarToken")
+    app.add_middleware(VerificarToken)
+else:
+    print("En Localhost: NO se activa middleware de VerificarToken")
+
+
+
+
+
+
+@app.get("/", description="Página principal del backend para validar si está funcionando.")
+def estado():
+    return {"message": "🚀 Brigada Service funcionando"}
+
+@app.get("/brigadas", description="Para solicitar la información completa de todas las brigadas existentes.")
+def ver_brigadas():
+    return brigadas()
+
+# Importe UUID para poder recibir la ID
+@app.post("/brigadas/{idbrigada}", description="Obtiene la información completa de una brigada.")
+def ver_brigada(idbrigada: UUID):
+    return brigada(idbrigada)
+
+@app.post("/usuarios/{correo}",description="Para solicitar la información completa de un usuario.")
+def usuario_informacion(correo : str):
+    return usuario(correo)
+
+@app.post("/hoja-vida/{nombre}", description="Para solicitar la hoja de vida del usuario.")
+def hoja_de_vida(nombre : str):
+    return hojaDeVida(nombre)
+
+@app.post("/registrar", description="Crea un usuario en la tabla de Usuarios de Brigada y procesa archivos.")
+async def registrar_usuario_endpoint(correo: str = Form(...),
+    cedula: str = Form(...),
+    nombre_completo: str = Form(...),
+    rol: str = Form(...),
+    telefono: str = Form(...),
+    fecha_ingreso: str = Form(...),
+    
+    # Campo de texto opcional
+    descripcion: Optional[str] = Form(None),
+    
+    # Archivos que vienen en FormData 
+    hoja_de_vida: Optional[UploadFile] = File(None),
+    foto_perfil: Optional[UploadFile] = File(None)
+):
+    return await registrarUsuario(
+        correo=correo,
+        cedula=cedula,
+        nombre_completo=nombre_completo,
+        descripcion=descripcion,
+        rol=rol,
+        telefono=telefono,
+        fecha_ingreso=fecha_ingreso,
+        hoja_de_vida=hoja_de_vida,
+        foto_perfil=foto_perfil
+    )
