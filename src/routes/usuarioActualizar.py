@@ -40,6 +40,7 @@ def usuarioActualizar(data: PerfilActualizar):
         return {
             "message": "El usuario ha sido actualizado.",
             "response": response.data,
+            "user": update_data
         }
     
     except HTTPException as e:
