@@ -4,9 +4,6 @@ from src.db.supabaseServerClient import supabasee
 from typing import Optional # Necesario para campos opcionales
 import os
 
-# NOTA: La clase RegistrarUsuario(BaseModel) ya no se usa, 
-# la borramos o ignoramos en el contexto de FormData.
-
 async def registrarUsuario(
     correo: str,
     cedula: str,
