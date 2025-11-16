@@ -6,6 +6,7 @@ from src.routes.brigadas import brigadas
 from src.routes.brigada import brigada
 from src.routes.hojaDeVida import hojaDeVida
 from src.routes.registrarUsuario import registrarUsuario
+from src.routes.usuarioActualizar import usuarioActualizar, PerfilActualizar
 from typing import Optional
 from uuid import UUID
 
@@ -39,14 +40,18 @@ def estado():
 def ver_brigadas():
     return brigadas()
 
+@app.get("/usuarios/{correo}",description="Para solicitar la información completa de un usuario.")
+def usuario_informacion(correo : str):
+    return usuario(correo)
+
 # Importe UUID para poder recibir la ID
 @app.post("/brigadas/{idbrigada}", description="Obtiene la información completa de una brigada.")
 def ver_brigada(idbrigada: UUID):
     return brigada(idbrigada)
 
-@app.post("/usuarios/{correo}",description="Para solicitar la información completa de un usuario.")
-def usuario_informacion(correo : str):
-    return usuario(correo)
+@app.put("/usuario-actualizar", description="Permite actualizar la información personal del usuario.")
+def usuario_actualizar(data : PerfilActualizar):
+    return usuarioActualizar(data)
 
 @app.post("/hoja-vida/{nombre}", description="Para solicitar la hoja de vida del usuario.")
 def hoja_de_vida(nombre : str):

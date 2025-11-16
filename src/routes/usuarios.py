@@ -20,7 +20,7 @@ def usuario(request):
             raise HTTPException(status_code=400, detail="El usuario no existe.")
 
         return {
-            "message": "El usuario existe",
+            "message": "El usuario existe.",
             "user": response,
         }
     
