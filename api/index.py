@@ -8,7 +8,6 @@ from src.routes.hojaDeVida import hojaDeVida
 from src.routes.registrarUsuario import registrarUsuario
 from typing import Optional
 from uuid import UUID
-import socket
 
 app = FastAPI(
     title = "API de Brigadas",
@@ -30,23 +29,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-# Detectar entorno al iniciar
-hostname = socket.gethostname()
-local_ip = socket.gethostbyname(hostname)
-
-print("Iniciando FastAPI desde:", local_ip)
-
-# Si FastAPI se levanta en localhost no se activa el middleware
-# Lo hizo para poder ir configurando en localhost y hacer las pruebas
-if local_ip not in ("192.168.56.1", "0.0.0.0"):
-    print("En Producción: Activando middleware de VerificarToken")
-    app.add_middleware(VerificarToken)
-else:
-    print("En Localhost: NO se activa middleware de VerificarToken")
-
-
-
-
 
 
 @app.get("/", description="Página principal del backend para validar si está funcionando.")
