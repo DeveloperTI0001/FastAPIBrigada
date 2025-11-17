@@ -11,6 +11,7 @@ from src.routes.generarComentario import generarComentario
 from src.routes.crearBrigada import crearBrigada, DataModel
 from src.routes.comentarios import comentarios
 from src.routes.eliminarComentario import eliminarComentario
+from src.routes.brigadaBrigadista import brigadaBrigadista, DataModelBrigadaBrigadista
 from typing import Optional
 from uuid import UUID
 
@@ -48,9 +49,15 @@ def ver_brigadas():
 def ver_comentarios(idConglomerado: UUID):
     return comentarios(idConglomerado)
 
-@app.get("/usuarios/{correo}",description="Para solicitar la información completa de un usuario.")
+@app.get("/usuarios/{correo}", description="Para solicitar la información completa de un usuario.")
 def usuario_informacion(correo : str):
     return usuario(correo)
+
+
+@app.post("/brigada-brigadista", description="Para solicitar a todos los usuarios vinculados a una brigada")
+def brigada_brigadista(brigada_id: str = Form(...)):
+    return brigadaBrigadista(brigada_id=brigada_id)
+
 
 # Importe UUID para poder recibir la ID
 @app.get("/brigadas/{idbrigada}", description="Obtiene la información completa de una brigada.")
