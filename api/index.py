@@ -7,8 +7,10 @@ from src.routes.brigada import brigada
 from src.routes.hojaDeVida import hojaDeVida
 from src.routes.registrarUsuario import registrarUsuario
 from src.routes.usuarioActualizar import usuarioActualizar, PerfilActualizar
+from src.routes.generarComentario import generarComentario
 from src.routes.crearBrigada import crearBrigada, DataModel
-
+from src.routes.comentarios import comentarios
+from src.routes.eliminarComentario import eliminarComentario
 from typing import Optional
 from uuid import UUID
 
@@ -42,6 +44,10 @@ def estado():
 def ver_brigadas():
     return brigadas()
 
+@app.get("/comentarios/{idConglomerado}", description="Para solicitar la información completa de todos los comentarios de un conglomerado.")
+def ver_comentarios(idConglomerado: UUID):
+    return comentarios(idConglomerado)
+
 @app.get("/usuarios/{correo}",description="Para solicitar la información completa de un usuario.")
 def usuario_informacion(correo : str):
     return usuario(correo)
@@ -54,6 +60,22 @@ def ver_brigada(idbrigada: UUID):
 @app.post("/crear-brigada", description="Crea una brigada y se la asigna a un conglomerado")
 def crear_brigada(data : DataModel):
     return crearBrigada(data)
+
+@app.post("/generar-comentario", description="Permite añadir un comentario a un conglomerado.")
+async def generar_comentario(
+    usuario_id: UUID = Form(...),
+    usuario_cedula: str = Form(...),
+    conglomeradoId: UUID = Form(...),
+    contenido: str = Form(...),
+    imagen: Optional[UploadFile] = File(None)
+):
+    return await generarComentario(
+        usuario_id= usuario_id,
+        usuario_cedula= usuario_cedula,
+        conglomeradoId= conglomeradoId,
+        contenido= contenido,
+        imagen = imagen
+    )
 
 @app.put("/usuario-actualizar", description="Permite actualizar la información personal del usuario.")
 def usuario_actualizar(data : PerfilActualizar):
@@ -89,3 +111,7 @@ async def registrar_usuario_endpoint(correo: str = Form(...),
         hoja_de_vida=hoja_de_vida,
         foto_perfil=foto_perfil
     )
+
+@app.delete("/comentario/{idComentario}", description="Para eliminar un comentario de un conglomerado.")
+def eliminar_comentario(idComentario : UUID):
+    return eliminarComentario(idComentario)
