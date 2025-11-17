@@ -8,7 +8,7 @@ def hojaDeVida(request):
         nombre = request.strip().lower()
         
         if not nombre:
-            raise HTTPException(status_code=400, detail="Correo requerido")
+            raise HTTPException(status_code=400, detail="Nombre del archivo requerido")
         
         # Creo que ni es necesario pero por si acaso
         nombre_decodificado = urllib.parse.unquote(nombre)
