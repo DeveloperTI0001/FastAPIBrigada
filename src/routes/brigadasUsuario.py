@@ -18,7 +18,17 @@ async def brigadasUsuario(usuario_id: str):
 
         data = response.data
 
+        for i in range(len(data)):
+            responseBrigadas = (
+                supabasee.table("brigadas")
+                .select("*")
+                .eq("id", data[i]['brigada_id'])
+                .execute()
+            )
+            data = responseBrigadas.data
+
         return {
+            "message": "Lista de brigadas",
             "data": data
         }
 
