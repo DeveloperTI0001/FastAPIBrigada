@@ -11,7 +11,8 @@ from src.routes.generarComentario import generarComentario
 from src.routes.crearBrigada import crearBrigada, DataModel
 from src.routes.comentarios import comentarios
 from src.routes.eliminarComentario import eliminarComentario
-from src.routes.brigadaBrigadista import brigadaBrigadista, DataModelBrigadaBrigadista
+from src.routes.brigadaBrigadista import brigadaBrigadista
+from src.routes.brigadasUsuario import brigadasUsuario
 from typing import Optional
 from uuid import UUID
 
@@ -58,6 +59,9 @@ def usuario_informacion(correo : str):
 async def brigada_brigadista(brigada_id: str = Form(...)):
     return await brigadaBrigadista(brigada_id=brigada_id)
 
+@app.get("/brigadas-usuario/{usuario_id}", description="Obtiene todas las brigadas en las que esta asignado el usuario.")
+async def ver_brigadas(usuario_id : str):
+    return await brigadasUsuario(usuario_id) 
 
 # Importe UUID para poder recibir la ID
 @app.get("/brigadas/{idbrigada}", description="Obtiene la información completa de una brigada.")

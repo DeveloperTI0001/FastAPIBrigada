@@ -1,13 +1,6 @@
 from src.db.supabaseServerClient import supabasee
 from fastapi import HTTPException, Form
 from fastapi.responses import JSONResponse
-from pydantic import BaseModel
-from typing import Optional
-from uuid import UUID
-
-class DataModelBrigadaBrigadista(BaseModel):
-    brigada_id: Optional[UUID] = None
-    usuario_id: Optional[UUID] = None
 
 async def brigadaBrigadista(brigada_id: str = Form(...)):
     try:
