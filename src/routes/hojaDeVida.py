@@ -6,7 +6,7 @@ import urllib.parse
 def hojaDeVida(request):
     try:
         # Limpiar y normalizar el nombre recibido
-        nombre = request.strip().lower()
+        nombre = request.strip()
         if not nombre:
             raise HTTPException(status_code=400, detail="Nombre del archivo requerido")
 
