@@ -1,7 +1,6 @@
 from src.db.supabaseServerClient import supabasee
 from fastapi import HTTPException
 from fastapi.responses import JSONResponse
-import urllib.parse
 
 def hojaDeVida(request):
     try:
@@ -10,11 +9,8 @@ def hojaDeVida(request):
         if not nombre:
             raise HTTPException(status_code=400, detail="Nombre del archivo requerido")
 
-        # Decodificar solo si el nombre viene como URL-encoded (ejemplo: 'mi%20archivo.pdf')
-        nombre_decodificado = urllib.parse.unquote(nombre)
-
         # Construir el path de almacenamiento
-        file_path = f"empleados/{nombre_decodificado}"
+        file_path = f"empleados/{nombre}"
 
         # Solicitar URL firmada
         response = supabasee.storage.from_("hojas_de_vida").create_signed_url(file_path, 600)
@@ -32,7 +28,6 @@ def hojaDeVida(request):
         raise e
     except Exception as err:
         print(err)
-        # Si el error tiene atributo message y es "Object not found" (según Supabase y tu SDK)
         if err.message == "Object not found":
             raise HTTPException(status_code=400, detail="No existe una hoja de vida con ese nombre.")
         return JSONResponse(status_code=500, content={"error": "Error en el servidor"})
