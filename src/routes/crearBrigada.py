@@ -59,6 +59,11 @@ def crearBrigada(data: DataModel):
             }
             supabasee.table("brigada_brigadistas").insert(data_asignacionBrigadista).execute()
 
+            try:
+                supabasee.table('usuarios').update({'estado': 'No Disponible'}).eq('id', brigadista_id).execute()
+            except:
+                print(err)
+
         # Guardar relación entre  brigada y conglomerado
         try:
             data_asignacionConglomerado = {
@@ -68,7 +73,7 @@ def crearBrigada(data: DataModel):
             }
 
             supabasee.table("asignaciones_conglomerados").insert(data_asignacionConglomerado).execute()
-            
+
         except HTTPException as e:
             raise e
         except Exception as err:
