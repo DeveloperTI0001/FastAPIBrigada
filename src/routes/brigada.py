@@ -17,7 +17,7 @@ def brigada(idBrigada):
 
         return {
             "message": "La brigada existe.",
-            "brigada": response,
+            "data": response.data,
         }
     
     except HTTPException as e:

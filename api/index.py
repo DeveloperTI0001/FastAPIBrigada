@@ -53,7 +53,7 @@ def usuario_informacion(correo : str):
     return usuario(correo)
 
 # Importe UUID para poder recibir la ID
-@app.post("/brigadas/{idbrigada}", description="Obtiene la información completa de una brigada.")
+@app.get("/brigadas/{idbrigada}", description="Obtiene la información completa de una brigada.")
 def ver_brigada(idbrigada: UUID):
     return brigada(idbrigada)
 
