@@ -1,6 +1,6 @@
 {
     "comandoIniciarLocal": "python -m uvicorn api.index:app --reload --port 8001",
-    "DespliegueVercel": "https://fast-api-login-six.vercel.app/",
+    "DespliegueVercel": "https://fast-api-brigada.vercel.app/",
 
     "comandoIniciarVercel": "No requiere comando",
 
