@@ -81,7 +81,7 @@ async def generar_comentario(
 def usuario_actualizar(data : PerfilActualizar):
     return usuarioActualizar(data)
 
-@app.post("/hoja-vida/{nombre}", description="Para solicitar la hoja de vida del usuario.")
+@app.get("/hoja-vida/{nombre}", description="Para solicitar la hoja de vida del usuario.")
 def hoja_de_vida(nombre : str):
     return hojaDeVida(nombre)
 
