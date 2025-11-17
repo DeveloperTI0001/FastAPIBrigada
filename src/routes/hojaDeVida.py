@@ -1,6 +1,7 @@
 from src.db.supabaseServerClient import supabasee
 from fastapi import HTTPException
 from fastapi.responses import JSONResponse
+import urllib.parse
 
 def hojaDeVida(request):
     try:
@@ -9,6 +10,8 @@ def hojaDeVida(request):
         if not nombre:
             raise HTTPException(status_code=400, detail="Nombre del archivo requerido")
 
+
+        nombre = urllib.parse.unquote(nombre)
         # Construir el path de almacenamiento
         file_path = f"empleados/{nombre}"
 
