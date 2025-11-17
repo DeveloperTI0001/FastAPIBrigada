@@ -11,10 +11,6 @@ def comentarios(idConglomerado):
             .eq("conglomerado_id", idConglomerado)
             .execute()
         )
-
-        if not response.data:
-            raise HTTPException(status_code=400, detail="Ese conglomerado no existe.")
-
         return {
             "data": response.data
         }
