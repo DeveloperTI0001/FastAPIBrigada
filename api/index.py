@@ -113,5 +113,5 @@ async def registrar_usuario_endpoint(correo: str = Form(...),
     )
 
 @app.delete("/comentario/{idComentario}", description="Para eliminar un comentario de un conglomerado.")
-def eliminar_comentario(idComentario : UUID):
+def eliminar_comentario(idComentario : str):
     return eliminarComentario(idComentario)

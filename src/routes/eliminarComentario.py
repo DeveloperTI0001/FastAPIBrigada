@@ -12,6 +12,7 @@ def eliminarComentario(idComentario):
             raise HTTPException(status_code=400, detail="Ese comentario ya no existe.")
 
         return {
+            "ok": True,
             "message": "La ha sido eliminada con éxito.",
         }
     
