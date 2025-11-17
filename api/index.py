@@ -7,6 +7,8 @@ from src.routes.brigada import brigada
 from src.routes.hojaDeVida import hojaDeVida
 from src.routes.registrarUsuario import registrarUsuario
 from src.routes.usuarioActualizar import usuarioActualizar, PerfilActualizar
+from src.routes.crearBrigada import crearBrigada, DataModel
+
 from typing import Optional
 from uuid import UUID
 
@@ -48,6 +50,10 @@ def usuario_informacion(correo : str):
 @app.post("/brigadas/{idbrigada}", description="Obtiene la información completa de una brigada.")
 def ver_brigada(idbrigada: UUID):
     return brigada(idbrigada)
+
+@app.post("/crear-brigada", description="Crea una brigada y se la asigna a un conglomerado")
+def crear_brigada(data : DataModel):
+    return crearBrigada(data)
 
 @app.put("/usuario-actualizar", description="Permite actualizar la información personal del usuario.")
 def usuario_actualizar(data : PerfilActualizar):
