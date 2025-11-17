@@ -55,8 +55,8 @@ def usuario_informacion(correo : str):
 
 
 @app.post("/brigada-brigadista", description="Para solicitar a todos los usuarios vinculados a una brigada")
-def brigada_brigadista(brigada_id: str = Form(...)):
-    return brigadaBrigadista(brigada_id=brigada_id)
+async def brigada_brigadista(brigada_id: str = Form(...)):
+    return await brigadaBrigadista(brigada_id=brigada_id)
 
 
 # Importe UUID para poder recibir la ID

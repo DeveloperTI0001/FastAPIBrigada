@@ -9,9 +9,7 @@ class DataModelBrigadaBrigadista(BaseModel):
     brigada_id: Optional[UUID] = None
     usuario_id: Optional[UUID] = None
 
-def brigadaBrigadista(brigada_id: str = Form(...)):
-
-    print("paso")
+async def brigadaBrigadista(brigada_id: str = Form(...)):
     try:
         # Validar brigada_id antes de continuar
         if not brigada_id:
@@ -25,8 +23,30 @@ def brigadaBrigadista(brigada_id: str = Form(...)):
             .execute()
         )
 
+        data = response.data
+
+        for i in range(len(data)):
+            responseBrigadista = (
+                supabasee.table("usuarios")
+                .select("*")
+                .eq("id", str(data[i]['usuario_id']))
+                .execute()
+            )
+            # Lo reduje para que no enviara información que no vaya a utilizar
+            data[i]['usuario'] = {
+                'nombre_completo': responseBrigadista.data[0]['nombre_completo'],
+                'correo': responseBrigadista.data[0]['correo'],
+                'descripcion': responseBrigadista.data[0]['descripcion'],
+                'cargo': responseBrigadista.data[0]['cargo'],
+                'region': responseBrigadista.data[0]['region'],
+                'telefono': responseBrigadista.data[0]['telefono'],
+                'cedula': responseBrigadista.data[0]['cedula'],
+                'departamento': responseBrigadista.data[0]['departamento'],
+                'municipio': responseBrigadista.data[0]['municipio'],
+            }
+
         return {
-            "data": response.data
+            "data": data
         }
 
     except HTTPException as e:
