@@ -16,7 +16,7 @@ def brigadas():
 
         return {
             "message": "Lista de brigadas",
-            "data": response,
+            "data": response.data,
         }
     
     except HTTPException as e:
